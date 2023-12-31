@@ -1,39 +1,39 @@
 import { useState } from "react";
 import "./App.css";
+import { Route, Routes, NavLink } from "react-router-dom";
+import { Home } from "./components/home/home";
+import { Login } from "./components/login/login";
+import { Order } from "./components/order/order";
 
 function App() {
   const [count, setCount] = useState(0);
-  const [deliveredPizzas, setDeliveredPizzas] = useState("");
+
+  console.log(`Render Count: ${count}`);
 
   const orderPizza = () => {
     setCount(count + 1);
-    let result = Math.random() < 0.9 ? "🍕" : "❌";
-    setDeliveredPizzas(deliveredPizzas + result);
+    console.log(`Count: ${count}`);
   };
 
   return (
     <>
       <img className="bg-img" src="./pizza-hero.jpg" alt="Pizza" />
+      <nav>
+        <NavLink to="/">home</NavLink> | <NavLink to="/login">login</NavLink> |{" "}
+        <NavLink to="/order">order</NavLink>
+      </nav>
       <header>
-        <img className="logo" src="./pizza-shop-logo.png"></img>
+        <NavLink to="/">
+          <img className="logo" src="./pizza-shop-logo.png"></img>
+        </NavLink>
         <h1>Pizza Shop</h1>
       </header>
       <main>
-        <p>
-          Welcome to the ultimate online pizza shop. Use our award winning{" "}
-          <i>Pizza Shop™</i> application to order your pizzas on your phone or
-          laptop and they magically appear.
-        </p>
-        <h2>Love it guarantee</h2>
-        <p>
-          At the Pizza Shop we always make it right! If we don't deliver a
-          fresh, perfectly cooked, pizza to your device in under 500
-          milliseconds we will bake you another pizza <b>add</b> refund your
-          money.
-        </p>
-        <h2>Order</h2>
-        <button onClick={orderPizza}>Buy now!</button>
-        <div className="delivery-box">{deliveredPizzas}</div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/order" element={<Order onOrder={orderPizza} />} />
+        </Routes>
       </main>
       <footer>
         <p className="count-text">{count} pizzas served</p>
