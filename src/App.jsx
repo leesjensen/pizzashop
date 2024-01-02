@@ -7,20 +7,24 @@ import { Order } from "./components/order/order";
 
 function App() {
   const [count, setCount] = useState(0);
-
-  console.log(`Render Count: ${count}`);
+  const [userState, setUserState] = useState("logged-out");
 
   const orderPizza = () => {
     setCount(count + 1);
-    console.log(`Count: ${count}`);
   };
 
   return (
     <>
       <img className="bg-img" src="./pizza-hero.jpg" alt="Pizza" />
       <nav>
-        <NavLink to="/">home</NavLink> | <NavLink to="/login">login</NavLink> |{" "}
-        <NavLink to="/order">order</NavLink>
+        {userState === "logged-in" ? (
+          <>
+            <NavLink to="/">home</NavLink> |{" "}
+            <NavLink to="/order">order</NavLink>
+          </>
+        ) : (
+          <NavLink to="/login">login</NavLink>
+        )}
       </nav>
       <header>
         <NavLink to="/">
@@ -30,8 +34,14 @@ function App() {
       </header>
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={<Home userState={userState} setUserState={setUserState} />}
+          />
+          <Route
+            path="/login"
+            element={<Login setUserState={setUserState} />}
+          />
           <Route path="/order" element={<Order onOrder={orderPizza} />} />
         </Routes>
       </main>

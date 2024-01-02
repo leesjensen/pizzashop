@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export function Home() {
+export function Home({ userState }) {
   const navigate = useNavigate();
 
   return (
@@ -16,7 +16,11 @@ export function Home() {
         perfectly cooked, pizza to your device in under 500 milliseconds we will
         bake you another pizza <b>and</b> refund your money.
       </p>
-      <button onClick={() => navigate("/order")}>Order now</button>
+      {userState === "logged-out" ? (
+        <button onClick={() => navigate("/login")}>Login</button>
+      ) : (
+        <button onClick={() => navigate("/order")}>Order Now</button>
+      )}
     </>
   );
 }
