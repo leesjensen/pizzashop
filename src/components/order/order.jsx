@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./wasm_exec.js";
 
 export function Order({ onOrder }) {
   const [deliveredPizzas, setDeliveredPizzas] = useState("");
@@ -7,7 +8,16 @@ export function Order({ onOrder }) {
     let result = Math.random() < 0.9 ? "🍕" : "❌";
     setDeliveredPizzas(deliveredPizzas + result);
     onOrder();
+    const x = makePizza("pep");
+    console.log(x);
   };
+
+  const go = new Go();
+  WebAssembly.instantiateStreaming(fetch("pizza.wasm"), go.importObject).then(
+    (result) => {
+      go.run(result.instance);
+    }
+  );
 
   return (
     <>
